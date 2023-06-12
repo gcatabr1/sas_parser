@@ -3,6 +3,14 @@ import re
 #-----------------------------------------------------------------------------
 # Define function to count the number of lines in a file
 def count_lines(file_path):
+    """Count the number of lines in a file
+
+    Args:
+        file_path (string): full path to the file
+
+    Returns:
+        string: the number of lines in the file
+    """
     with open(file_path, 'r') as file:  # Open the file
         lines = file.readlines()  # Read all lines into a list
     return ("line_count", len(lines))  # Return the number of lines
@@ -11,6 +19,14 @@ def count_lines(file_path):
 #-----------------------------------------------------------------------------
 # Define function to count the number of 'proc sql / quit;' pairs
 def count_sql(file_path):
+    """Count the number of SQL statements
+
+    Args:
+        file_path (string): full path to the file
+
+    Returns:
+        string: count of the number of SQL statements
+    """
     with open(file_path, 'r') as file:  # Open the file
         content = file.read()  # Read the entire file into a string
     return ("sql_count", len(re.findall("proc sql.*?quit;", content, flags=re.IGNORECASE | re.DOTALL)))
@@ -22,10 +38,10 @@ def get_sql_code(file_path):
     """This function parses a text file looking for SQL blocks (defined by proc sql / quit; pair) and returns the line number and corresponding SQL code
 
     Args:
-        file_path (string): pass the full file path to be parsed
+        file_path (string): full file path to be parsed
 
     Returns:
-        string: the returned string is in the format of a list of line numbe, sql code blocks pairs
+        string: the returned string is in the format of a list of line number, sql code blocks pairs
     """
     sql_blocks = []
     with open(file_path, 'r') as file:
@@ -52,6 +68,14 @@ def get_sql_code(file_path):
 #-----------------------------------------------------------------------------
 # Define function to find lines starting with 'LIBNAME'
 def get_libname_lines(file_path):
+    """Return any line in the file with a LIBNAME function
+
+    Args:
+        file_path (string): full file path to be parsed
+
+    Returns:
+        string: list of the lines having a LIBNAME function
+    """
     libname_lines = []
     with open(file_path, 'r') as file:  # Open the file
         lines = file.readlines()  # Read all lines into a list

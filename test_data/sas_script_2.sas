@@ -1,3 +1,5 @@
+%INCLUDE "test_data/deeper_test_data/sas_script_d1.sas";
+
 * Create a library for our datasets;
 LIBNAME mylib 'c:\myfolder';
 

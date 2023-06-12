@@ -4,10 +4,22 @@ file: sas_parser.py
 author: g.cattabriga
 date: 2023.05.27
 purpose: python script (main function) to execute one or more parse functions on one or more sas (text) files in a specified directory
+        this creates 2 files, a summary_yymmddhhmmss.csv file and a summary_yymmddhhmmss.csv file
+        the summary file contains the list of file names, directories and date attributes (create, modified) evaluated
+        the detail file contains the results of each parse function performed on each file in the summary
+example use: python sas_parser.py -i 'test_data' -t 'sas' -o 'results'
+        where 'test_data' is the directory of text data to be parsed, 'sas' is the file type (.sas.) and
+        'results' is the directory the summary and details will be saved.
+
 notes: the parsing / evaluation functions are in the parse_functions.py file 
 todo: 
         creating a third table, where the first table remains the header, the second table is the cross table to 
         the header table and to the detail table so as to accommodate multiple values for a single metric
+
+        function that returns key elements of a SQL statement (e.g. table names, column names)
+
+        If performance becomes and issue, then don't keep opening the file, but instead pass the contents 
+        of the file to the parse functions. 
 
 """
 
