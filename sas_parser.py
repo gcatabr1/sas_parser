@@ -49,7 +49,6 @@ def process_files(input_dir, output_dir, file_type):
                         for dirpath, dirnames, files in os.walk(input_dir)
                         for file in files if file.endswith(f".{file_type}")]
 
-
     # Write the file summary
     with open(summary_file_name, 'w', newline='') as file:
         writer = csv.writer(file)
@@ -84,7 +83,6 @@ if __name__ == "__main__":
     parser.add_argument('-i', '--input_dir', type=str, required=True, help='Input directory')
     parser.add_argument('-t', '--file_type', type=str, required=True, help='File type to be processed')
     parser.add_argument('-o', '--output_dir', type=str, required=True, help='Output directory')
-
     
     # Parse command line arguments
     args = parser.parse_args()
