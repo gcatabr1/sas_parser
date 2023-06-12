@@ -21,51 +21,6 @@ from tqdm import tqdm
 from parse_functions import *   # import all the parse functions 
 
 
-# # Define main function to process files
-# def process_files(input_dir, output_dir, file_type):
-#     """Will iterate over file [types] in the given directory and apply the given parse functions
-
-#     Args:
-#         input_dir (string): full path to directory of input files to process
-#         output_dir (string): full path to output results of parsing functions
-#         file_type (string): text file extension to process (without the '.' character)
-#     """    
-
-#     # List of functions to call on each file
-#     functions = [count_lines, 
-#                  count_sql, 
-#                  get_sql_code, 
-#                  get_libname_lines, 
-#                  count_exports, 
-#                  count_null_ds, 
-#                  find_date_lines]
-
-#     # Get a list of all files in the input directory with the specified file type
-#     files = [f for f in os.listdir(input_dir) if f.endswith('.' + file_type)]
-    
-#     # Get the current date and time to append to the output file names
-#     now = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-
-#     # First pass: gather file metadata and write it to the summary CSV file
-#     with open(os.path.join(output_dir, f"summary_{now}.csv"), 'w', newline='') as summary_file:
-#         writer = csv.writer(summary_file)
-#         writer.writerow(["f_name", "dir_path", "create_dt", "modified_dt"])
-#         for filename in tqdm(files, desc="Gathering file metadata"):
-#             file_path = os.path.join(input_dir, filename)  # Get the full path to the file
-#             create_date = datetime.datetime.fromtimestamp(os.path.getctime(file_path)).isoformat()
-#             modified_date = datetime.datetime.fromtimestamp(os.path.getmtime(file_path)).isoformat()
-#             writer.writerow([filename, file_path, create_date, modified_date])
-
-#     # Second pass: evaluate the SAS scripts and write the results to the detail CSV file
-#     with open(os.path.join(output_dir, f"detail_{now}.csv"), 'w', newline='') as detail_file:
-#         writer = csv.writer(detail_file)
-#         writer.writerow(["f_name", "dir_path", "func_descr", "func_value"])
-#         for filename in tqdm(files, desc="Processing files"):
-#             file_path = os.path.join(input_dir, filename)  # Get the full path to the file
-#             for func in functions:
-#                 result_name, result_value = func(file_path)  # Call the function on the file
-#                 writer.writerow([filename, file_path, result_name, result_value])
-
 def process_files(input_dir, output_dir, file_type):
     # List to store results of functions
     results = []
@@ -134,13 +89,3 @@ if __name__ == "__main__":
     
     # Call the main function with the parsed arguments
     process_files(args.input_dir, args.output_dir, args.file_type)
-
-
-
-
-
-
-
-
-
-
