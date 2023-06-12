@@ -1,0 +1,107 @@
+import re
+
+#-----------------------------------------------------------------------------
+# Define function to count the number of lines in a file
+def count_lines(file_path):
+    with open(file_path, 'r') as file:  # Open the file
+        lines = file.readlines()  # Read all lines into a list
+    return ("line_count", len(lines))  # Return the number of lines
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+# Define function to count the number of 'proc sql / quit;' pairs
+def count_sql(file_path):
+    with open(file_path, 'r') as file:  # Open the file
+        content = file.read()  # Read the entire file into a string
+    return ("sql_count", len(re.findall("proc sql.*?quit;", content, flags=re.IGNORECASE | re.DOTALL)))
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+# Define function to find SQL blocks
+def get_sql_code(file_path):
+    """This function parses a text file looking for SQL blocks (defined by proc sql / quit; pair) and returns the line number and corresponding SQL code
+
+    Args:
+        file_path (string): pass the full file path to be parsed
+
+    Returns:
+        string: the returned string is in the format of a list of line numbe, sql code blocks pairs
+    """
+    sql_blocks = []
+    with open(file_path, 'r') as file:
+        lines = [line.strip() for line in file.readlines()]
+    # We initialize block and start_line to None as we haven't found a block yet
+    block = None
+    start_line = None
+    for i, line in enumerate(lines):
+        if 'proc sql' in line.lower():
+            # If we find 'proc sql', we start a new block
+            block = []
+            start_line = i + 1  # Line numbers start at 1
+        elif block is not None:
+            # If we're inside a block, we add the line to the block
+            if 'quit;' in line.lower():
+                # If we find 'quit;', we end the block and add it to sql_blocks
+                sql_blocks.append((start_line, ' '.join(block))) # Join lines into one string
+                block = None  # Reset block for the next one
+            else:
+                block.append(line)
+    return ("sql_code", sql_blocks)
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+# Define function to find lines starting with 'LIBNAME'
+def get_libname_lines(file_path):
+    libname_lines = []
+    with open(file_path, 'r') as file:  # Open the file
+        lines = file.readlines()  # Read all lines into a list
+    for line in lines:  # For each line
+        if line.lower().startswith('libname'):  # If it starts with 'libname' (case insensitive)
+            libname_lines.append(line)  # Add it to the list
+    return ("libname_lines", libname_lines)  # Return the list of matching lines
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+# Define function to count the number of 'proc export / run;' pairs
+def count_exports(file_path):
+    with open(file_path, 'r') as file:  # Open the file
+        content = file.read()  # Read the entire file into a string
+    return ("export_count", len(re.findall("proc export.*?run;", content, flags=re.IGNORECASE | re.DOTALL)))
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+# Define function to count the number of '_null_ / run;' pairs
+def count_null_ds(file_path):
+    with open(file_path, 'r') as file:  # Open the file
+        content = file.read()  # Read the entire file into a string
+    return ("null_ds_count", len(re.findall("_null_.*?run;", content, flags=re.IGNORECASE | re.DOTALL)))
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+# Define function to find lines with hardcoded dates
+def find_date_lines(file_path):
+    date_lines = []
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+    for i, line in enumerate(lines):
+        # Find any date in the format yyyy-mm-dd
+        matches = re.findall(r'\b\d{4}-\d{2}-\d{2}\b', line)
+        if matches:
+            # If a date is found, add the line number (i+1) and the dates to the list
+            date_lines.append((i+1, matches))
+    return ("hardcoded_dates", date_lines)
+#-----------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------
+# Define function to find references to other files
+def find_file_references(file_path, file_list):
+    file_references = []
+    with open(file_path, 'r') as file:
+        lines = [line.strip() for line in file.readlines()]
+    for i, line in enumerate(lines):
+        for referenced_file in file_list:
+            # If the line contains the filename, add it to the list of references
+            if referenced_file in line:
+                file_references.append((i + 1, referenced_file))
+    return ("file_ref", file_references)
+#-----------------------------------------------------------------------------
