@@ -88,9 +88,9 @@ def main(input_dir, output_dir, file_type):
 
     # These lines output the dataframes to CSV files, adding a timestamp to each filename
     dt_string = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-    summary_df.to_csv(os.path.join(output_dir, 'summary_'+dt_string+'.csv'), index=False, terminator='\r\n')
-    xref_df.to_csv(os.path.join(output_dir, 'xref_'+dt_string+'.csv'), index=False, terminator='\r\n')
-    detail_df.to_csv(os.path.join(output_dir, 'detail_'+dt_string+'.csv'), index=False, terminator='\r\n')
+    summary_df.to_csv(os.path.join(output_dir, 'summary_'+dt_string+'.csv'), index=False, line_terminator='\r\n')
+    xref_df.to_csv(os.path.join(output_dir, 'xref_'+dt_string+'.csv'), index=False, line_terminator='\r\n')
+    detail_df.to_csv(os.path.join(output_dir, 'detail_'+dt_string+'.csv'), index=False, line_terminator='\r\n')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process some files.')
