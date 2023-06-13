@@ -3,6 +3,7 @@ SAS PARSER
 file: sas_parser.py
 author: g.cattabriga
 date: 2023.05.27
+version: 1.0
 purpose: python script (main function) to execute one or more parse functions on one or more sas (text) files in a specified directory
         this creates 2 files, a summary_yymmddhhmmss.csv file and a summary_yymmddhhmmss.csv file
         the summary file contains the list of file names, directories and date attributes (create, modified) evaluated

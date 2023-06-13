@@ -1,4 +1,13 @@
 import re
+import datetime
+import os
+
+#-----------------------------------------------------------------------------
+# This function is designed to extract basic information about the file, such as its creation and modification dates
+def get_file_info(file_path):
+    return 'file_info', [{'create_dt': datetime.datetime.fromtimestamp(os.path.getctime(file_path)).isoformat(),
+                          'modified_dt': datetime.datetime.fromtimestamp(os.path.getmtime(file_path)).isoformat(),}]
+#-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------
 # Define function to count the number of lines in a file
@@ -13,7 +22,7 @@ def count_lines(file_path):
     """
     with open(file_path, 'r') as file:  # Open the file
         lines = file.readlines()  # Read all lines into a list
-    return ("line_count", len(lines))  # Return the number of lines
+    return ("line_count", [len(lines)])  # Return the number of lines
 #-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------
@@ -29,7 +38,7 @@ def count_sql(file_path):
     """
     with open(file_path, 'r') as file:  # Open the file
         content = file.read()  # Read the entire file into a string
-    return ("sql_count", len(re.findall("proc sql.*?quit;", content, flags=re.IGNORECASE | re.DOTALL)))
+    return ("sql_count", [len(re.findall("proc sql.*?quit;", content, flags=re.IGNORECASE | re.DOTALL))])
 #-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------
@@ -90,7 +99,7 @@ def get_libname_lines(file_path):
 def count_exports(file_path):
     with open(file_path, 'r') as file:  # Open the file
         content = file.read()  # Read the entire file into a string
-    return ("export_count", len(re.findall("proc export.*?run;", content, flags=re.IGNORECASE | re.DOTALL)))
+    return ("export_count", [len(re.findall("proc export.*?run;", content, flags=re.IGNORECASE | re.DOTALL))])
 #-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------
@@ -98,7 +107,7 @@ def count_exports(file_path):
 def count_null_ds(file_path):
     with open(file_path, 'r') as file:  # Open the file
         content = file.read()  # Read the entire file into a string
-    return ("null_ds_count", len(re.findall("_null_.*?run;", content, flags=re.IGNORECASE | re.DOTALL)))
+    return ("null_ds_count", [len(re.findall("_null_.*?run;", content, flags=re.IGNORECASE | re.DOTALL))])
 #-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------
