@@ -129,6 +129,7 @@ def find_date_lines(file_path):
 # Define function to find references to other files
 def find_file_references(file_path, file_list):
     file_references = []
+    file_list = [sub.replace('\\', '/') for sub in file_list]   # fix path issue with windows
     with open(file_path, 'r') as file:
         lines = [line.strip() for line in file.readlines()]
     for i, line in enumerate(lines):
