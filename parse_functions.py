@@ -91,7 +91,7 @@ def get_libname_lines(file_path):
     for line in lines:  # For each line
         if line.lower().startswith('libname'):  # If it starts with 'libname' (case insensitive)
             libname_lines.append(line)  # Add it to the list
-    return ("libname_lines", libname_lines)  # Return the list of matching lines
+    return ("libname", libname_lines)  # Return the list of matching lines
 #-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------
