@@ -5,8 +5,6 @@ author: g.cattabriga
 date: 2023.05.27
       2023.06.06
         update to use dataframes and 3 tables
-      2023.06.07
-        update by swapping out the xfer dataframe / csv for a dimension table of function descriptions. Keep summary and detail dataframes / csv's
 version: 2.0
 purpose: python script (main function) to execute one or more parse functions on one or more sas (text) files in a specified directory
         this creates 2 files, a summary_yymmddhhmmss.csv file and a summary_yymmddhhmmss.csv file
@@ -18,7 +16,9 @@ example use: python sas_parser.py -i 'test_data' -t 'sas' -o 'results'
 
 notes: the parsing / evaluation functions are in the parse_functions.py file 
 todo: 
-        parallelize the parsing loop 
+        creating a third table, where the first table remains the header, the second table is the cross table to 
+        the header table and to the detail table so as to accommodate multiple values for a single metric
+        use dataframes to create primary keys
 
         function that returns key elements of a SQL statement (e.g. table names, column names)
 
@@ -53,19 +53,15 @@ functions_to_apply = [
     find_date_lines,
     find_file_references] 
 
-# populate the dimension dataframe with the parse functions to be used and assign a primary key 
-dim_func_df = pd.DataFrame({
-    'func_idx': range(1, len(functions_to_apply)+1),
-    'func_name': [func.__name__ for func in functions_to_apply]
-})
-
 def main(input_dir, output_dir, file_type):
     file_list = get_file_list(input_dir, file_type)
 
     summary_df = pd.DataFrame(columns=['summ_idx', 'f_name', 'dir_path', 'create_dt', 'modified_dt'])
-    detail_df = pd.DataFrame(columns=['summ_idx', 'func_idx', 'func_value'])
+    xref_df = pd.DataFrame(columns=['summ_idx', 'xref_idx', 'func_descr'])
+    detail_df = pd.DataFrame(columns=['xref_idx', 'func_value'])
 
     summary_index = 1
+    xref_index = 1
 
     for file_path in tqdm(file_list, desc="Processing files"):
         dir_name, file_name = os.path.split(file_path)  # get directory and filename
@@ -76,23 +72,25 @@ def main(input_dir, output_dir, file_type):
             summary_df = summary_df.append(file_info, ignore_index=True)
 
         for func in functions_to_apply:
-            func_idx = dim_func_df[dim_func_df['func_name'] == func.__name__]['func_idx'].values[0]
             num_args = len(inspect.signature(func).parameters)
             if num_args == 1:
-                _, vals = func(file_path)
+                result_name, vals = func(file_path)
             elif num_args == 2:
-                _, vals = func(file_path, file_list)
+                result_name, vals = func(file_path, file_list)
             for val in vals:
-                detail_df = detail_df.append({'summ_idx': summary_index, 'func_idx': func_idx,
-                                              'func_value': val}, ignore_index=True)
+                xref_df = xref_df.append({'summ_idx': summary_index, 'xref_idx': xref_index,
+                                          'func_descr': result_name}, ignore_index=True)
+                detail_df = detail_df.append({'xref_idx': xref_index, 'func_value': val}, ignore_index=True)
+
+                xref_index += 1
 
         summary_index += 1
 
+    # These lines output the dataframes to CSV files, adding a timestamp to each filename
     dt_string = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
     summary_df.to_csv(os.path.join(output_dir, 'summary_'+dt_string+'.csv'), index=False, line_terminator='\r\n')
-    dim_func_df.to_csv(os.path.join(output_dir, 'dim_func_'+dt_string+'.csv'), index=False, line_terminator='\r\n')
+    xref_df.to_csv(os.path.join(output_dir, 'xref_'+dt_string+'.csv'), index=False, line_terminator='\r\n')
     detail_df.to_csv(os.path.join(output_dir, 'detail_'+dt_string+'.csv'), index=False, line_terminator='\r\n')
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process some files.')
@@ -102,3 +100,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     main(args.input_dir, args.output_dir, args.file_type)
+
+
