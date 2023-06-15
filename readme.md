@@ -133,6 +133,6 @@ TBD
 
 ## To-Do
 Things to consider adding or improving on:
-- paralizing (muliprocess package) the main parse routine
+- parallelizing (muliprocess package) the main parse routine
 - pass a copy of the script (text) to each parser instead of the filename - so as to avoid opening the file for each parser 
 
