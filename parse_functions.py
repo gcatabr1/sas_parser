@@ -20,7 +20,7 @@ def count_lines(file_path):
     Returns:
         string: the number of lines in the file
     """
-    with open(file_path, 'r') as file:  # Open the file
+    with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
         lines = file.readlines()  # Read all lines into a list
     return ("line_count", [len(lines)])  # Return the number of lines
 #-----------------------------------------------------------------------------
@@ -36,7 +36,7 @@ def count_sql(file_path):
     Returns:
         string: count of the number of SQL statements
     """
-    with open(file_path, 'r') as file:  # Open the file
+    with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
         content = file.read()  # Read the entire file into a string
     return ("sql_count", [len(re.findall("proc sql.*?quit;", content, flags=re.IGNORECASE | re.DOTALL))])
 #-----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ def get_sql_code(file_path):
         string: the returned string is in the format of a list of line number, sql code blocks pairs
     """
     sql_blocks = []
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='cp1252') as file:
         lines = [line.strip() for line in file.readlines()]
     # We initialize block and start_line to None as we haven't found a block yet
     block = None
@@ -86,7 +86,7 @@ def get_libname_lines(file_path):
         string: list of the lines having a LIBNAME function
     """
     libname_lines = []
-    with open(file_path, 'r') as file:  # Open the file
+    with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
         lines = file.readlines()  # Read all lines into a list
     for line in lines:  # For each line
         if line.lower().startswith('libname'):  # If it starts with 'libname' (case insensitive)
@@ -97,7 +97,7 @@ def get_libname_lines(file_path):
 #-----------------------------------------------------------------------------
 # Define function to count the number of 'proc export / run;' pairs
 def count_exports(file_path):
-    with open(file_path, 'r') as file:  # Open the file
+    with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
         content = file.read()  # Read the entire file into a string
     return ("export_count", [len(re.findall("proc export.*?run;", content, flags=re.IGNORECASE | re.DOTALL))])
 #-----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ def count_exports(file_path):
 #-----------------------------------------------------------------------------
 # Define function to count the number of '_null_ / run;' pairs
 def count_null_ds(file_path):
-    with open(file_path, 'r') as file:  # Open the file
+    with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
         content = file.read()  # Read the entire file into a string
     return ("null_ds_count", [len(re.findall("_null_.*?run;", content, flags=re.IGNORECASE | re.DOTALL))])
 #-----------------------------------------------------------------------------
@@ -114,7 +114,7 @@ def count_null_ds(file_path):
 # Define function to find lines with hardcoded dates
 def find_date_lines(file_path):
     date_lines = []
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='cp1252') as file:
         lines = file.readlines()
     for i, line in enumerate(lines):
         # Find any date in the format yyyy-mm-dd
