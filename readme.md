@@ -66,7 +66,7 @@ and then queried for various aspects of that parsed information.
 ## Solution
 
 #### Architecture
-![overview](/images/parser_overview.png)
+![overview](images/parser_overview.png)
 
 The solution consists of 2 python scripts:
 
@@ -121,7 +121,7 @@ and ***parse_functions.py*** contains the individual parse functions
 
 **Relationship**
 
-![csv_er](/images/csv_er.png)
+![csv_er](images/csv_er.png)
 
 </br>
 
@@ -155,7 +155,7 @@ To run the code with pre-selected parsers, first clone the repository, activate 
 
 On execution, the python script will output a status bar as it performs each of the parsers on the file directory specified.
 
-![command](/images/sas_parser_command.png)
+![command](images/sas_parser_command.png)
 
 > **Note**
 > If you only want specific parsers to execute, you will need to edit the sas_parser2.py file and modify the variable ***functions_to_apply***
