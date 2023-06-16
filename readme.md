@@ -104,7 +104,7 @@ and ***parse_functions.py*** contains the individual parse functions
 
 | column name | type |
 |---|---|
-| summ_id | integer |
+| summ_idx | integer |
 | func_idx | integer |
 | func_value | text |
 
