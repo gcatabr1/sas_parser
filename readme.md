@@ -1,5 +1,6 @@
 
 <h1 align="center">
+
   <br>
 
   <br>
@@ -224,11 +225,39 @@ Highlevel, the script performs the following operations:
     - insert the parsing function results into the ***detail_df*** data frame
 5. write out the CSV files
 
+### parse_functions.py
+This script contains all the parse functions called from sas_parser.py
+The general pattern used by the parse functions are:
+- call the parse function with the file path
+- perform the 'parse' code
+- return the function name [string] and corresponding value [string, int, tuple, list, etc]
+
+```python
+def count_lines(file_path):
+    """Count the number of lines in a file
+
+    Args:
+        file_path (string): full path to the file
+
+    Returns:
+        integer: the number of lines in the file
+    """
+    with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
+        lines = file.readlines()  # Read all lines into a list
+    return ("line_count", [len(lines)])  # Return the number of lines
+```
+
+Of course, you could call a parse function with any number of arguments. But be aware that it 
+would need to be addressed in the sas_parser.py main function.
+
+For example, the ***find_file_references*** function needs two arguments, and thus, there is 
+a conditional statement that checks if the function has one or two arguments and calls accordingly.
+
 </br></br>
 
 ## Notes
 
-- Current performance, with 9 parser functions applied, is about 600 files per minute
+- Current performance, with 9 parser functions evaluated, is about 600 files per minute
 
 </br></br>
 
