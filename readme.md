@@ -123,6 +123,7 @@ and ***parse_functions.py*** contains the individual parse functions
 ![csv_er](/images/csv_er.png)
 
 </br>
+
 ## Requirements
 
 Python 3.x
