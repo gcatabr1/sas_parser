@@ -218,11 +218,11 @@ Highlevel, the script performs the following operations:
 2. insert the parsing functions into the ***dim_func_df*** data frame
 3. read the directory file into a list
 4. iterate over the file list
-  1. insert file info into the ***summary_df***
-  2. for each parsing function
-    1. 
-
-
+4a. insert file info into the ***summary_df***
+4b. for each parsing function
+    - evaluate the file with the parsing function
+    - insert the parsing function results into the ***detail_df*** data frame
+5. write out the CSV files
 
 </br></br>
 
