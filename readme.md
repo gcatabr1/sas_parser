@@ -61,7 +61,7 @@ also specified on the command line.
 2. ***parser*** functions that mine information from one or more [text] scripts - returning it in a format (CSV) that can be ingested by most databases
 and then queried for various aspects of that parsed information.
 
-</br></br>
+</br>
 
 ## Solution
 
@@ -122,7 +122,7 @@ and ***parse_functions.py*** contains the individual parse functions
 **Relationship**
 ![csv_er](/images/csv_er.png)
 
-</br></br>
+</br>
 ## Requirements
 
 Python 3.x
@@ -131,7 +131,7 @@ Python environment with the following packages installed:
 - pandas
 - tqdm
 
-</br></br>
+</br>
 
 ## How To Run
 There are 2 highlevel steps to working with the parser:
@@ -200,7 +200,7 @@ where dim_func.func_name = 'count_lines'
 order by cast(detail.func_value as int)
 ```
 
-</br></br>
+</br>
 
 ## Technical
 
@@ -253,13 +253,13 @@ would need to be addressed in the sas_parser.py main function.
 For example, the ***find_file_references*** function needs two arguments, and thus, there is 
 a conditional statement that checks if the function has one or two arguments and calls accordingly.
 
-</br></br>
+</br>
 
 ## Notes
 
 - Current performance, with 9 parser functions evaluated, is about 600 files per minute
 
-</br></br>
+</br>
 
 ## To-Do
 
