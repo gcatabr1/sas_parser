@@ -45,6 +45,7 @@ functions_to_apply = [
     count_sql, 
     get_sql_code, 
     get_libname_lines, 
+    get_password_lines,
     count_exports, 
     count_null_ds, 
     find_date_lines,

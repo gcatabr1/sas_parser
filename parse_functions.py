@@ -95,6 +95,28 @@ def get_libname_lines(file_path):
 #-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------
+# Define function to find lines containing 'password'
+def get_password_lines(file_path):
+    """Return any line in the file with a reference to 'password'
+
+    Args:
+        file_path (string): full file path to be parsed
+
+    Returns:
+        string: list of the lines containing the string 'password'
+    """
+    password_lines = []
+    with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
+        lines = file.readlines()  # Read all lines into a list
+    for line in lines:  # For each line
+        if line.lower().find('password') != -1:  # If it contains 'password' (case insensitive)
+            password_lines.append(line)  # Add it to the list
+    return ("password", password_lines)  # Return the list of matching lines
+#-----------------------------------------------------------------------------
+
+
+
+#-----------------------------------------------------------------------------
 # Define function to count the number of 'proc export / run;' pairs
 def count_exports(file_path):
     """Return the number of 'proc export / run;' pairs

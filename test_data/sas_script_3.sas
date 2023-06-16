@@ -1,3 +1,5 @@
+%let password = something
+
 * Create a library for our datasets;
 LIBNAME mylib 'c:\myfolder';
 

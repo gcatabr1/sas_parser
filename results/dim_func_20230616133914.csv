@@ -4,7 +4,8 @@ func_idx,func_name
 3,count_sql
 4,get_sql_code
 5,get_libname_lines
-6,count_exports
-7,count_null_ds
-8,find_date_lines
-9,find_file_references
+6,get_password_lines
+7,count_exports
+8,count_null_ds
+9,find_date_lines
+10,find_file_references

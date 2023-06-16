@@ -1,6 +1,8 @@
 * Connect to an Oracle database;
 %INCLUDE "test_data/sas_script_2.sas";
 
+%let password = fred;
+
 PROC SQL;
     CONNECT TO ORACLE (USER=your_username PASSWORD=your_password PATH=your_path);
 QUIT;
