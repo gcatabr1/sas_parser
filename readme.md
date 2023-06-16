@@ -191,7 +191,7 @@ particular details you are interested in. Refer to the relationship of the CSV f
 Assuming you have already imported the CSV files into a database, with table names corresponding to the csv file names, 
 here is an example query:
 
-Q: How many SAS files are in the directory (and sub-directories) sorted by lines of code (descending)
+Q: List all the files in the directory (and sub-directories) sorted by lines-of-code count (descending)
 
 ```sql
 select summary.f_name as file_name, summary.dir_path, cast(detail.func_value as int) as line_ct
@@ -200,6 +200,25 @@ join detail on summary.summ_idx = detail.summ_idx
 join dim_func on detail.func_idx = dim_func.func_idx
 where dim_func.func_name = 'count_lines'
 order by cast(detail.func_value as int)
+```
+
+Q: List files referencing an external file (in the input directory) named: master_script.sas
+
+```sql
+select 
+  summary.f_name as file_name, 
+  summary.dir_path, 
+  summary.create_dt, 
+  summary.modified_dt, 
+  dim_func.func_name, 
+  detail.func_value 
+from summary 
+join detail on summary.summ_idx = detail.summ_idx
+join dim_func on detail.func_idx = dim_func.func_idx
+where 
+  dim_func.func_name in ('find_file_references')
+  and
+  upper(detail.func_value) like '%MASTER_SCRIPT.SAS%';
 ```
 
 </br>
