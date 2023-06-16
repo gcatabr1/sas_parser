@@ -97,7 +97,7 @@ def get_libname_lines(file_path):
 #-----------------------------------------------------------------------------
 # Define function to find lines containing 'password'
 def get_password_lines(file_path):
-    """Return any line in the file with a reference to 'password'
+    """Return any line in the file with a reference to 'password' (but doesn't have the generic &password)
 
     Args:
         file_path (string): full file path to be parsed
@@ -109,7 +109,7 @@ def get_password_lines(file_path):
     with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
         lines = file.readlines()  # Read all lines into a list
     for line in lines:  # For each line
-        if line.lower().find('password') != -1:  # If it contains 'password' (case insensitive)
+        if (line.lower().find('password') != -1) and (line.lower().find('"&password"') == -1):  # If it contains 'password' (case insensitive)
             password_lines.append(line)  # Add it to the list
     return ("password", password_lines)  # Return the list of matching lines
 #-----------------------------------------------------------------------------
@@ -185,7 +185,7 @@ def find_file_references(file_path, file_list):
     """
     file_references = []
     file_list = [sub.replace('\\', '/') for sub in file_list]   # fix path issue with windows
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding='cp1252') as file:
         lines = [line.strip() for line in file.readlines()]
     for i, line in enumerate(lines):
         for referenced_file in file_list:
