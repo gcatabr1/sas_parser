@@ -18,7 +18,7 @@ def count_lines(file_path):
         file_path (string): full path to the file
 
     Returns:
-        string: the number of lines in the file
+        integer: the number of lines in the file
     """
     with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
         lines = file.readlines()  # Read all lines into a list
@@ -34,7 +34,7 @@ def count_sql(file_path):
         file_path (string): full path to the file
 
     Returns:
-        string: count of the number of SQL statements
+        integer: count of the number of SQL statements
     """
     with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
         content = file.read()  # Read the entire file into a string
@@ -50,7 +50,7 @@ def get_sql_code(file_path):
         file_path (string): full file path to be parsed
 
     Returns:
-        string: the returned string is in the format of a list of line number, sql code blocks pairs
+        tuple of form (int, string): returns line number and sql code block pair
     """
     sql_blocks = []
     with open(file_path, 'r', encoding='cp1252') as file:
@@ -97,6 +97,14 @@ def get_libname_lines(file_path):
 #-----------------------------------------------------------------------------
 # Define function to count the number of 'proc export / run;' pairs
 def count_exports(file_path):
+    """Return the number of 'proc export / run;' pairs
+
+    Args:
+        file_path (string): full file path to be parsed
+
+    Returns:
+        integer: count of proc export blocks
+    """
     with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
         content = file.read()  # Read the entire file into a string
     return ("export_count", [len(re.findall("proc export.*?run;", content, flags=re.IGNORECASE | re.DOTALL))])
@@ -105,6 +113,14 @@ def count_exports(file_path):
 #-----------------------------------------------------------------------------
 # Define function to count the number of '_null_ / run;' pairs
 def count_null_ds(file_path):
+    """Return the number of of _null_ dataset blocks in the given file
+
+    Args:
+        file_path (string): full file path to be parsed
+
+    Returns:
+        integer: count of _null_ dataset blocks
+    """
     with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
         content = file.read()  # Read the entire file into a string
     return ("null_ds_count", [len(re.findall("_null_.*?run;", content, flags=re.IGNORECASE | re.DOTALL))])
@@ -113,6 +129,14 @@ def count_null_ds(file_path):
 #-----------------------------------------------------------------------------
 # Define function to find lines with hardcoded dates
 def find_date_lines(file_path):
+    """Find lines containing strings that 'look like' hardcoded dates of format yyyy-mm-dd
+
+    Args:
+        file_path (string): full file path to be parsed
+
+    Returns:
+        tuple of form (int, string): returns line number and date string pair
+    """
     date_lines = []
     with open(file_path, 'r', encoding='cp1252') as file:
         lines = file.readlines()
@@ -128,6 +152,15 @@ def find_date_lines(file_path):
 #-----------------------------------------------------------------------------
 # Define function to find references to other files
 def find_file_references(file_path, file_list):
+    """Find lines containing a file reference - from the file_list, which is a list of all files evaluated
+
+    Args:
+        file_path (string): full file path to be parsed
+        file_list ([string]): list of strings representing all of the files to be checked against
+
+    Returns:
+        tuple of form (int, string): returns line number and date (yyyy-mm-dd) found in the file_path
+    """
     file_references = []
     file_list = [sub.replace('\\', '/') for sub in file_list]   # fix path issue with windows
     with open(file_path, 'r') as file:

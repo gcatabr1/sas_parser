@@ -15,15 +15,12 @@ purpose: python script (main function) to execute one or more parse functions on
 example use: python sas_parser.py -i 'test_data' -t 'sas' -o 'results'
         where 'test_data' is the directory of text data to be parsed, 'sas' is the file type (.sas.) and
         'results' is the directory the summary and details will be saved.
-
 notes: the parsing / evaluation functions are in the parse_functions.py file 
-todo: 
-        parallelize the parsing loop 
 
-        function that returns key elements of a SQL statement (e.g. table names, column names)
-
-        If performance becomes and issue, then don't keep opening the file, but instead pass the contents 
-        of the file to the parse functions. 
+todo: parallelize the parsing loop using the python multiprocess package 
+todo: function that returns key elements of a SQL statement (e.g. table names, column names)
+todo: pass the contents of the evaluated file to the parse functions instead of having it open the file each time
+todo: better error handling
 """
 
 
@@ -95,7 +92,7 @@ def main(input_dir, output_dir, file_type):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Process some files.')
+    parser = argparse.ArgumentParser(description='Parse text files and output the results as normalized csv files.')
     parser.add_argument('-i', '--input_dir', required=True, help='The input directory for files to be processed')
     parser.add_argument('-o', '--output_dir', required=True, help='The output directory for processed files')
     parser.add_argument('-t', '--file_type', required=True, help='The file type to be processed')
