@@ -109,7 +109,7 @@ def get_password_lines(file_path):
     with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
         lines = file.readlines()  # Read all lines into a list
     for line in lines:  # For each line
-        if (line.lower().find('password') != -1) and (line.lower().find('"&password"') == -1):  # If it contains 'password' (case insensitive)
+        if (line.lower().replace(" ","").find('password=') != -1) and (line.lower().find('"&password"') == -1):  # If it contains 'password' (case insensitive)
             password_lines.append(line)  # Add it to the list
     return ("password", password_lines)  # Return the list of matching lines
 #-----------------------------------------------------------------------------

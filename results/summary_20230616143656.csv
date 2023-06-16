@@ -1,0 +1,6 @@
+summ_idx,f_name,dir_path,create_dt,modified_dt
+1,sas_script_3.sas,test_data,2023-06-16T13:36:57.198449,2023-06-16T13:36:57.198449
+2,sas_script_2.sas,test_data,2023-06-12T15:15:29.947480,2023-06-12T15:15:29.947480
+3,sas_script_1.sas,test_data,2023-06-16T13:36:46.030827,2023-06-16T13:36:46.030827
+4,sas_script_4.sas,test_data,2023-06-12T09:28:28.429096,2023-06-12T09:28:28.429096
+5,sas_script_d1.sas,test_data/deeper_test_data,2023-06-12T15:21:30.504493,2023-06-12T15:21:30.504493
