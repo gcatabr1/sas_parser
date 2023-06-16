@@ -65,7 +65,7 @@ and then queried for various aspects of that parsed information.
 
 ## Solution
 
-####Architecture
+#### Architecture
 ![overview](/images/parser_overview.png)
 
 The solution consists of 2 python scripts:
@@ -87,7 +87,7 @@ and ***parse_functions.py*** contains the individual parse functions
 
 </br>
 
-####CSV Output File Structure and Relationship 
+#### CSV Output File Structure and Relationship 
 
 **summary** 
 
