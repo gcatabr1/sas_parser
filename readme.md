@@ -120,6 +120,7 @@ and ***parse_functions.py*** contains the individual parse functions
 </br>
 
 **Relationship**
+
 ![csv_er](/images/csv_er.png)
 
 </br>
