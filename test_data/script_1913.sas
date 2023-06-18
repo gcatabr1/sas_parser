@@ -1,0 +1,11 @@
+%let password = password_exposed;
+%let password = password_exposed;
+%macro summarize_data(lib, data, var);
+PROC MEANS DATA=&lib..&data;
+VAR &var;
+RUN;
+%mend summarize_data;
+run;
+LIBNAME DW_TEST SQLSERVER SERVER=PROD1 SCHEMA=s_schema user = &userid password = "&password";
+proc print data=sashelp.class; run;
+* This is a comment;

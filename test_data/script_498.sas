@@ -1,0 +1,15 @@
+proc means data=sashelp.class; run;
+LIBNAME DW_TEST SQLSERVER SERVER=PROD1 SCHEMA=s_schema user = &userid password = "&password";
+%let password = password_exposed;
+run;
+%let password = password_exposed;
+proc means data=sashelp.class; run;
+LIBNAME DW_TEST SQLSERVER SERVER=PROD1 SCHEMA=s_schema user = &userid password = "&password";
+data _null_;
+%macro summarize_data(lib, data, var);
+PROC MEANS DATA=&lib..&data;
+VAR &var;
+RUN;
+%mend summarize_data;
+data _null_; set sashelp.class; file myfile; put (_all_)(=); run;
+%INCLUDE "test_data/deeper_test_data/sas_script_d1.sas";data new; set old;

@@ -1,0 +1,17 @@
+filename myfile "/path/to/file";
+proc sql; 
+ select col1, col2, col3 from t_schema.table1 where co1 = "some_string"; 
+quit;
+PROC DATASETS LIBRARY=mylib;
+CONTENTS DATA=mytable;
+QUIT;
+proc means data=sashelp.class; run;
+proc means data=sashelp.class; run;
+proc means data=sashelp.class; run;
+LIBNAME DW_TEST SQLSERVER SERVER=PROD1 SCHEMA=s_schema user = &userid password = "&password";
+%macro summarize_data(lib, data, var);
+PROC MEANS DATA=&lib..&data;
+VAR &var;
+RUN;
+%mend summarize_data;
+run;

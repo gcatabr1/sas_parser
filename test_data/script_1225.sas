@@ -1,0 +1,11 @@
+filename myfile "/path/to/file";
+proc means data=sashelp.class; run;
+proc sql; 
+ select col1, col2, col3 from t_schema.table1 where co1 = "some_string"; 
+quit;
+DATA _NULL_;
+SET mylib.mytable;
+FILE "c:\myfolder\log.txt";
+PUT "The name is " Name;
+RUN;
+LIBNAME DW_TEST SQLSERVER SERVER=PROD1 SCHEMA=s_schema user = &userid password = "&password";

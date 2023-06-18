@@ -1,0 +1,18 @@
+%let password = password_exposed;
+proc means data=sashelp.class; run;
+%macro summarize_data(lib, data, var);
+PROC MEANS DATA=&lib..&data;
+VAR &var;
+RUN;
+%mend summarize_data;
+proc sql; 
+ select col1, col2, col3 from t_schema.table1 where co1 = "some_string"; 
+quit;
+data _null_; set sashelp.class; file myfile; put (_all_)(=); run;
+DATA _NULL_;
+SET mylib.mytable;
+FILE "c:\myfolder\log.txt";
+PUT "The name is " Name;
+RUN;
+data _null_; set sashelp.class; file myfile; put (_all_)(=); run;
+LIBNAME DW_TEST SQLSERVER SERVER=PROD1 SCHEMA=s_schema user = &userid password = "&password";

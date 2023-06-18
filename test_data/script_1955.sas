@@ -1,0 +1,11 @@
+LIBNAME DW_TEST SQLSERVER SERVER=PROD1 SCHEMA=s_schema user = &userid password = "&password";
+run;
+proc print data=sashelp.class; run;
+* This is a comment;
+* This is a comment;
+%let password = password_exposed;
+%INCLUDE "test_data/deeper_test_data/sas_script_d1.sas";data new; set old;
+proc means data=sashelp.class; run;
+proc print data=sashelp.class; run;
+run;
+* This is a comment;

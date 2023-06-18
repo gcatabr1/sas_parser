@@ -1,0 +1,16 @@
+run;
+DATA _NULL_;
+SET mylib.mytable;
+FILE "c:\myfolder\log.txt";
+PUT "The name is " Name;
+RUN;
+proc sql; 
+ select col1, col2, col3 from t_schema.table1 where co1 = "some_string"; 
+quit;
+filename myfile "/path/to/file";
+LIBNAME DW_TEST SQLSERVER SERVER=PROD1 SCHEMA=s_schema user = &userid password = "&password";
+%macro summarize_data(lib, data, var);
+PROC MEANS DATA=&lib..&data;
+VAR &var;
+RUN;
+%mend summarize_data;

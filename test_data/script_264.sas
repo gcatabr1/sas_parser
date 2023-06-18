@@ -1,0 +1,18 @@
+data _null_; set sashelp.class; file myfile; put (_all_)(=); run;
+%macro summarize_data(lib, data, var);
+PROC MEANS DATA=&lib..&data;
+VAR &var;
+RUN;
+%mend summarize_data;
+* This is a comment;
+proc sql; 
+ select col1, col2, col3 from t_schema.table1 where co1 = "some_string"; 
+quit;
+data _null_;
+%macro summarize_data(lib, data, var);
+PROC MEANS DATA=&lib..&data;
+VAR &var;
+RUN;
+%mend summarize_data;
+proc print data=sashelp.class; run;
+filename myfile "/path/to/file";

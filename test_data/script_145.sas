@@ -1,0 +1,14 @@
+data _null_; set sashelp.class; file myfile; put (_all_)(=); run;
+proc print data=sashelp.class; run;
+filename myfile "/path/to/file";
+DATA _NULL_;
+SET mylib.mytable;
+FILE "c:\myfolder\log.txt";
+PUT "The name is " Name;
+RUN;
+%INCLUDE "test_data/deeper_test_data/sas_script_d1.sas";data new; set old;
+%macro summarize_data(lib, data, var);
+PROC MEANS DATA=&lib..&data;
+VAR &var;
+RUN;
+%mend summarize_data;

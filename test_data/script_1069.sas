@@ -1,0 +1,16 @@
+%INCLUDE "test_data/deeper_test_data/sas_script_d1.sas";data new; set old;
+%INCLUDE "test_data/deeper_test_data/sas_script_d1.sas";data new; set old;
+LIBNAME DW_TEST SQLSERVER SERVER=PROD1 SCHEMA=s_schema user = &userid password = "&password";
+DATA _NULL_;
+SET mylib.mytable;
+FILE "c:\myfolder\log.txt";
+PUT "The name is " Name;
+RUN;
+proc print data=sashelp.class; run;
+PROC DATASETS LIBRARY=mylib;
+CONTENTS DATA=mytable;
+QUIT;
+* This is a comment;
+filename myfile "/path/to/file";
+%let password = password_exposed;
+proc means data=sashelp.class; run;

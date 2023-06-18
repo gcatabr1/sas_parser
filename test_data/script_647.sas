@@ -1,0 +1,12 @@
+filename myfile "/path/to/file";
+%let password = password_exposed;
+PROC DATASETS LIBRARY=mylib;
+CONTENTS DATA=mytable;
+QUIT;
+%macro summarize_data(lib, data, var);
+PROC MEANS DATA=&lib..&data;
+VAR &var;
+RUN;
+%mend summarize_data;
+* This is a comment;
+* This is a comment;

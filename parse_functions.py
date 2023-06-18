@@ -103,14 +103,14 @@ def get_password_lines(file_path):
         file_path (string): full file path to be parsed
 
     Returns:
-        string: list of the lines containing the string 'password'
+        tuple of form (int, string): returns line number and the password statement
     """
     password_lines = []
     with open(file_path, 'r', encoding='cp1252') as file:  # Open the file
         lines = file.readlines()  # Read all lines into a list
-    for line in lines:  # For each line
+    for i, line in enumerate(lines):
         if (line.lower().replace(" ","").find('password=') != -1) and (line.lower().find('"&password"') == -1):  # If it contains 'password' (case insensitive)
-            password_lines.append(line)  # Add it to the list
+            password_lines.append((i + 1, line))  # Add it to the list
     return ("password", password_lines)  # Return the list of matching lines
 #-----------------------------------------------------------------------------
 

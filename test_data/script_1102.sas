@@ -1,0 +1,18 @@
+LIBNAME DW_TEST SQLSERVER SERVER=PROD1 SCHEMA=s_schema user = &userid password = "&password";
+PROC DATASETS LIBRARY=mylib;
+CONTENTS DATA=mytable;
+QUIT;
+run;
+%INCLUDE "test_data/deeper_test_data/sas_script_d1.sas";data new; set old;
+filename myfile "/path/to/file";
+%INCLUDE "test_data/deeper_test_data/sas_script_d1.sas";data new; set old;
+%macro summarize_data(lib, data, var);
+PROC MEANS DATA=&lib..&data;
+VAR &var;
+RUN;
+%mend summarize_data;
+%let password = password_exposed;
+%let password = password_exposed;
+run;
+filename myfile "/path/to/file";
+proc means data=sashelp.class; run;

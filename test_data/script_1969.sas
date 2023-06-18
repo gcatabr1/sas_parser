@@ -1,0 +1,17 @@
+proc print data=sashelp.class; run;
+%let password = password_exposed;
+PROC DATASETS LIBRARY=mylib;
+CONTENTS DATA=mytable;
+QUIT;
+filename myfile "/path/to/file";
+proc sql; 
+ create table t_table3 as select col1, col2, col3, col4 from t_schema.table2 join t_schema.table8 on table2.idx = table8.idx group by 1, 2, 3, 4; 
+quit;
+PROC DATASETS LIBRARY=mylib;
+CONTENTS DATA=mytable;
+QUIT;
+%macro summarize_data(lib, data, var);
+PROC MEANS DATA=&lib..&data;
+VAR &var;
+RUN;
+%mend summarize_data;
