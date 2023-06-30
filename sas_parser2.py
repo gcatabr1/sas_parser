@@ -7,7 +7,9 @@ date: 2023.05.27
         update to use dataframes and 3 tables
       2023.06.07
         update by swapping out the xfer dataframe / csv for a dimension table of function descriptions. Keep summary and detail dataframes / csv's
-version: 2.0
+      2023.06.30
+        replace pandas function append (going to be depricated) with the faster concat
+version: 2.1
 purpose: python script (main function) to execute one or more parse functions on one or more sas (text) files in a specified directory
         this creates 2 files, a summary_yymmddhhmmss.csv file and a summary_yymmddhhmmss.csv file
         the summary file contains the list of file names, directories and date attributes (create, modified) evaluated
@@ -31,34 +33,36 @@ import pandas as pd
 from tqdm import tqdm
 import datetime
 from parse_functions import *   # import all the parse functions 
-
+import time
 
 # This function is designed to recursively scan through the specified directory, finding all files of the specified type
 def get_file_list(directory, file_type):
     return [os.path.join(root, file) for root, dirs, files in os.walk(directory) for file in files if file.endswith(file_type)]
 
-
 # List of functions to apply
 functions_to_apply = [
     get_file_info,
-    count_lines, 
-    count_sql, 
-    get_sql_code, 
-    get_libname_lines, 
+    count_lines,
+    count_sql,
+    get_sql_code,
+    get_libname_lines,
     get_password_lines,
-    count_exports, 
-    count_null_ds, 
-    find_date_lines,
-    find_file_references] 
+    count_exports,
+    count_null_ds,
+    find_date_lines
+    # ,find_file_references
+    ]
 
-# populate the dimension dataframe with the parse functions to be used and assign a primary key 
+# populate the dimension dataframe with the parse functions to be used and assign a primary key
 dim_func_df = pd.DataFrame({
-    'func_idx': range(1, len(functions_to_apply)+1),
+    'func_idx': range(1, len(functions_to_apply) + 1),
     'func_name': [func.__name__ for func in functions_to_apply]
 })
 
 def main(input_dir, output_dir, file_type):
     file_list = get_file_list(input_dir, file_type)
+
+    start_time = time.time()  # Start the timer
 
     summary_df = pd.DataFrame(columns=['summ_idx', 'f_name', 'dir_path', 'create_dt', 'modified_dt'])
     detail_df = pd.DataFrame(columns=['summ_idx', 'func_idx', 'func_value'])
@@ -71,7 +75,7 @@ def main(input_dir, output_dir, file_type):
 
         for file_info in file_info_values:
             file_info.update({'summ_idx': summary_index, 'f_name': file_name, 'dir_path': dir_name})
-            summary_df = summary_df.append(file_info, ignore_index=True)
+            summary_df = pd.concat([summary_df, pd.DataFrame(file_info, index=[0])], ignore_index=True)
 
         for func in functions_to_apply:
             func_idx = dim_func_df[dim_func_df['func_name'] == func.__name__]['func_idx'].values[0]
@@ -80,17 +84,19 @@ def main(input_dir, output_dir, file_type):
                 _, vals = func(file_path)
             elif num_args == 2:
                 _, vals = func(file_path, file_list)
-            for val in vals:
-                detail_df = detail_df.append({'summ_idx': summary_index, 'func_idx': func_idx,
-                                              'func_value': val}, ignore_index=True)
+            detail_df = pd.concat([detail_df, pd.DataFrame({'summ_idx': summary_index, 'func_idx': func_idx,
+                                                             'func_value': vals})], ignore_index=True)
 
         summary_index += 1
 
-    dt_string = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-    summary_df.to_csv(os.path.join(output_dir, 'summary_'+dt_string+'.csv'), index=False, line_terminator='\r\n')
-    dim_func_df.to_csv(os.path.join(output_dir, 'dim_func_'+dt_string+'.csv'), index=False, line_terminator='\r\n')
-    detail_df.to_csv(os.path.join(output_dir, 'detail_'+dt_string+'.csv'), index=False, line_terminator='\r\n')
+    elapsed_time = time.time() - start_time  # Calculate the elapsed time
 
+    dt_string = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+    summary_df.to_csv(os.path.join(output_dir, 'summary_' + dt_string + '.csv'), index=False, lineterminator='\r\n')
+    dim_func_df.to_csv(os.path.join(output_dir, 'dim_func_' + dt_string + '.csv'), index=False, lineterminator='\r\n')
+    detail_df.to_csv(os.path.join(output_dir, 'detail_' + dt_string + '.csv'), index=False, lineterminator='\r\n')
+
+    print(f"Total time elapsed: {elapsed_time} seconds")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Parse text files and output the results as normalized csv files.')
